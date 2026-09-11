@@ -169,14 +169,14 @@ clojure -M:run
 
 ### Test suite
 
-- `test/avretailops/governor_test.clj` -- unit tests of governor hard
+- `test/avretailops/governor_test.cljk` -- unit tests of governor hard
   checks, scope exclusion, and the self-trip regression test
-- `test/avretailops/advisor_test.clj` -- advisor proposal shape and
+- `test/avretailops/advisor_test.cljk` -- advisor proposal shape and
   consistency
-- `test/avretailops/phase_test.clj` -- rollout phase logic
-- `test/avretailops/governor_contract_test.clj` -- full graph
+- `test/avretailops/phase_test.cljk` -- rollout phase logic
+- `test/avretailops/governor_contract_test.cljk` -- full graph
   integration, audit trail
-- `test/avretailops/store_contract_test.clj` -- Store protocol and
+- `test/avretailops/store_contract_test.cljk` -- Store protocol and
   MemStore implementation
 
 ### Modules
