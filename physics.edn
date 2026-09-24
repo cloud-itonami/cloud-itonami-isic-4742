@@ -1,0 +1,34 @@
+;; What this vertical's robot physically does, declared for
+;; kotoba.robotics.process (kotoba-lang/robotics). `kbb -M:dev:physics` runs it.
+;;
+;; README "Robotics premise": a robot may perform shelfing, picking,
+;; restocking and point-of-sale handling in an audio and video equipment
+;; store (ISIC 4742), gated by store policy. The physical work: an arm
+;; taking a boxed TV off the back-room rack onto the delivery cart, and the
+;; cart carrying the tall TV carton on its edge to the customer pick-up
+;; counter.
+;;
+;; Every number without a cited source is marked `estimate` in its :basis.
+;; Replacing an estimate with a sourced value is this bot's growth work.
+{:physics/schema "itonami.physical-ai.spec.v1"
+ :repo "cloud-itonami/cloud-itonami-isic-4742"
+ :cases
+ [{:id :tv-carton-off-rack
+   :kind :manipulator
+   :procedure "back-room arm lifts a boxed TV off the upper rack beam and lowers it onto the delivery cart"
+   :params {:l1-m 0.80 :l2-m 0.70 :m1-kg 16.0 :m2-kg 10.0
+            :from [0.90 0.80] :to [1.00 0.20] :duration-s 3.0 :steps 500}
+   :sweep {:param :payload-kg :values [5.0 10.0 20.0 30.0 40.0]}
+   :quantity :peak-tau1-nm
+   :limit {:max 450.0 :basis "estimate: continuous shoulder torque of a ~35 kg-payload arm with a 1.5 m reach"}
+   :boundary {:lo 1.0 :hi 100.0}}
+  {:id :tv-carton-cart-stop
+   :kind :transport
+   :procedure "delivery cart carries a 30 kg TV carton standing on its edge (load centre 0.9 m up) to the pick-up counter and brakes to a stop"
+   :params {:mass-kg 40.0 :payload-kg 30.0 :distance-m 40.0 :v-max-mps 1.0 :a-max-mps2 0.4
+            :drive-force-n 120.0 :crr 0.015 :cog-height-m 0.30 :payload-cog-height-m 0.90
+            :support-half-length-m 0.35 :max-time-s 600.0}
+   :sweep {:param :brake-decel-mps2 :values [0.5 1.0 2.0 3.0 4.0]}
+   :quantity :min-tipover-margin
+   :limit {:min 0.5 :basis "estimate: half the static margin kept so an edge-standing TV carton does not topple off the cart when it stops"}
+   :boundary {:lo 0.2 :hi 8.0}}]}
